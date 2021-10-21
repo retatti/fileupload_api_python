@@ -37,9 +37,9 @@ def set_api():
 
     return service
 
-def upload(service, fname, ftype):
+def upload(service, fname, ftype, fpath):
     file_metadata = {'name': fname}
-    media = MediaFileUpload(fname, mimetype=ftype)
+    media = MediaFileUpload(fpath, mimetype=ftype)
     file = service.files().create(body=file_metadata,
                                         media_body=media,
                                         fields='id').execute()
@@ -84,17 +84,15 @@ def display(service):
 
 
 
-def main():
-    # Post PDF file
+def fileupload(fpath, fname):
 
-    fname = 'test.txt'
     ftype = 'plain/text'
 
     # Set info of the Drive v3 API 
     service = set_api()
 
     # Upload PDF file to google drive 
-    fid = upload(service, fname, ftype)
+    fid = upload(service, fname, ftype, fpath)
 
     # Set up shared file
     set_share(service, fid)
@@ -116,4 +114,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    fileupload("./uploads/test.pdf", "test.pdf")
